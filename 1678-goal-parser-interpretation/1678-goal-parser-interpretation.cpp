@@ -1,22 +1,37 @@
 class Solution {
 public:
     string interpret(string command) {
-        string result= "";
-        for(int i=0; i<command.size(); i++)
-        {
-            if(command[i] == '(')
-            {
-                if(command[i+1] == ')')
-                    result += "o";
-                if(command[i+1] == 'a' && command[i+2] == 'l')
-                {
-                    result += "al";
-                    i += 2;
+        stack<char> stkk;
+        string ans="";
+        for(auto i:command){
+            stkk.push(i);
+        }
+        stack<char> stk;
+        while(stkk.size()){
+            stk.push(stkk.top());
+            stkk.pop();
+        }
+        while(stk.size()){
+            char ch=stk.top();
+            stk.pop();
+            if(ch=='('){
+                int cnt=0;
+                while(stk.size() && stk.top()!=')'){
+                    cnt++;
+                    stk.pop();
+                }
+                if(stk.size()){stk.pop();}
+                if(cnt){
+                    ans+="al";
+                }
+                else{
+                    ans+="o";
                 }
             }
-            if(command[i] == 'G')
-                result += "G";
+            else{
+                ans+="G";
+            }
         }
-        return result;
+        return ans;
     }
 };
